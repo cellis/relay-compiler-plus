@@ -120,11 +120,6 @@ const argv = yargs // eslint-disable-line prefer-destructuring
       demandOption: false,
       type: 'string',
     },
-    watchman: {
-      describe: 'Use watchman when not in watch mode',
-      type: 'boolean',
-      default: true,
-    },
     watch: {
       describe: 'If specified, watches files and regenerates on changes',
       type: 'boolean',
@@ -135,9 +130,6 @@ const argv = yargs // eslint-disable-line prefer-destructuring
       describe: 'File extensions to compile (--extensions js jsx)',
       type: 'string',
     },
-    watch: {
-
-    }
   })
   .help().argv;
 
