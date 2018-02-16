@@ -18,7 +18,13 @@ const {
 * Most of the code in this run method are ripped from:
 * relay-compiler/bin/RelayCompilerBin.js
 */
-const run = async (options: { schema: string, src: string, webpackConfig: string, extensions:  Array<string>}) => {
+const run = async (options: {
+  schema: string,
+  src: string,
+  webpackConfig: string,
+  extensions:  Array<string>
+  watch?: ?boolean,
+}) => {
   const srcDir = path.resolve(process.cwd(), options.src);
   console.log(`src: ${srcDir}`);
 
@@ -76,7 +82,7 @@ const run = async (options: { schema: string, src: string, webpackConfig: string
   let result = '';
   try {
     // the real work is done here
-    result = await codegenRunner.compileAll();
+    result = options.watch ? await codegenRunner.compileAll() : await codegenRunner.watchAll();
   } catch (err) {
     console.log(`Error codegenRunner.compileAll(): ${err}`);
     throw err;
@@ -114,12 +120,24 @@ const argv = yargs // eslint-disable-line prefer-destructuring
       demandOption: false,
       type: 'string',
     },
+    watchman: {
+      describe: 'Use watchman when not in watch mode',
+      type: 'boolean',
+      default: true,
+    },
+    watch: {
+      describe: 'If specified, watches files and regenerates on changes',
+      type: 'boolean',
+    },
     extensions: {
       array: true,
       default: ['js', 'jsx'],
       describe: 'File extensions to compile (--extensions js jsx)',
       type: 'string',
     },
+    watch: {
+
+    }
   })
   .help().argv;
 
